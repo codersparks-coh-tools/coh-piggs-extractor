@@ -16,6 +16,4 @@ jobs:
         with:
           python-version: '3.8'
       - run: ls -al
-      - run: pip install nose
-      - name: Run unit test
-        run: nose
+      - run: pip install nose && nose
