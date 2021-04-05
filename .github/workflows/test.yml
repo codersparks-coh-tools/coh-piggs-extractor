@@ -15,5 +15,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+      - run: ls -al
       - name: Run unit test
         run: python -m unittest test.test_coh_piggs_extractor.CohPiggsExtractorTests.test_functional
