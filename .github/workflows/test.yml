@@ -17,4 +17,4 @@ jobs:
           python-version: '3.8'
       - run: ls -al
       - name: Run unit test
-        run: python -m unittest test.test_coh_piggs_extractor.CohPiggsExtractorTests.test_functional
+        run: python3 -m unittest test.test_coh_piggs_extractor.CohPiggsExtractorTests.test_functional
