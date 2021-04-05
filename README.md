@@ -1,2 +1,5 @@
 # coh-piggs-extrator
-Code that can be used to parse the COH piggs file format to extract contained files
+
+A module that allows the extracting of files from a City Of Heroes [Pigg file](https://cityofheroes.fandom.com/wiki/PIGG)
+
+
