@@ -35,3 +35,19 @@ A simple file extracting strategy has been provided as well
 ```
 This will output each of the contained files into the specified ```out_dir``` provided during construction.
 
+## Development Notes
+
+### Release
+
+To perform a release to PyPI, after setting up credentials - [Api Tokens](https://pypi.org/help/#apitoken) 
+
+1. Update the setup.cfg with the new version number
+2. From the project root directory run
+```shell
+python -m pip install twine --upgrade
+python -m build
+python -m twine upload dist/*
+```
+
+
+
