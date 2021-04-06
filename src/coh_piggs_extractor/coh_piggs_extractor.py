@@ -58,7 +58,7 @@ class PiggFile(object):
 
         hdr = self.read_struct("<LHHHHL", 16)
         if hdr[0] != 0x123:
-            _logger.info("Not a PIGG file!")
+            _logger.error("Not a PIGG file!")
             return
         ents = hdr[5]
 
