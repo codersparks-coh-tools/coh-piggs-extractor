@@ -37,7 +37,18 @@ class DirEntry(object):
 
 
 class PiggFile(object):
-    def __init__(self, fname):
+    """
+    The piggFile object processes the specified file into the relevant details, using the supplied strategy for further
+    processing the extracted files
+    """
+
+    def __init__(self, fname, strategy):
+        """
+        Constructor
+        :param fname: filename/path of piggs file to process
+        :param strategy: The implementation of PiggFileEntryProcessingStrategy to use to process the entries of the file
+        """
+        self.strategy = strategy
         self.fname = fname
         self.files = []
         self.strings = []
@@ -99,16 +110,10 @@ class PiggFile(object):
                 cdata = self.f.read(ent.csize)
                 data = zlib.decompress(cdata)
 
-            output_file = os.path.join(out_dir, name.decode('utf-8'))
+            self.strategy.process_pigg_file_entry(ent, data)
 
-            output_folder = os.path.dirname(output_file)
 
-            if not os.path.exists(output_folder):
-                os.makedirs(os.path.dirname(output_file))
 
-            df = open(output_file, "wb")
-            df.write(data)
-            df.close()
 
     def decompress_slot(self, data):
         fsize = struct.unpack("<L", data[:4])[0]
@@ -136,3 +141,36 @@ class PiggFile(object):
     def read_string(self):
         # strip final null byte
         return self.read_vardata()[:-1]
+
+
+class PiggFileEntryProcessingStrategy(object):
+    """
+    A simple no-op strategy that others can extend from
+    """
+
+    def process_pigg_file_entry(self, meta, data):
+        pass
+
+class SimpleFileOutputEntryProcessingStrategy(PiggFileEntryProcessingStrategy):
+    """
+    This simple strategy outputs each of the files (maintaining internal directory structure) to the folder passed at
+    construction
+    """
+
+    def __init__(self, out_dir):
+        """
+        Constructor
+        :param out_dir: The directory to output the files to
+        """
+        self.out_dir = out_dir
+
+    def process_pigg_file_entry(self, meta, data):
+        output_file = os.path.join(self.out_dir, meta.name.decode('utf-8'))
+
+        output_folder = os.path.dirname(output_file)
+
+        if not os.path.exists(output_folder):
+            os.makedirs(os.path.dirname(output_file))
+
+        with open(output_file, "wb") as df:
+            df.write(data)

@@ -37,8 +37,11 @@ class CohPiggsExtractorTests(unittest.TestCase):
 
         temp_out_dir = tempfile.TemporaryDirectory()
 
-        pigg_file = src.coh_piggs_extractor.coh_piggs_extractor.PiggFile(test_file)
-        pigg_file.extract_files(out_dir=temp_out_dir.name)
+        strategy = src.coh_piggs_extractor.coh_piggs_extractor.SimpleFileOutputEntryProcessingStrategy(
+            out_dir=temp_out_dir.name)
+
+        pigg_file = src.coh_piggs_extractor.coh_piggs_extractor.PiggFile(test_file, strategy)
+        pigg_file.extract_files()
 
         actual_extracted_filenames = set()
 
